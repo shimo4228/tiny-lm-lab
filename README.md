@@ -39,8 +39,23 @@ uv run pytest --cov
 
 ## 実行結果 (2026-07-07, M-series 16GB)
 
-<!-- RESULTS -->
-Zenn コーパス（185万文字）での学習ランは実行中。完了後にこのセクションへ loss curve・生成サンプル・attention 可視化を追記する。
+Zenn 記事276本（クリーニング後 **1,851,137 文字**、語彙 1,852）で学習:
+
+| 項目 | 値 |
+|---|---|
+| モデル | 4,173,312 params (4L × 4H, d256, ctx256) |
+| 学習 | 3,000 steps × batch 32 — **19.4 分** |
+| loss | 初期 7.52 (=ln 1852) → train **1.54** / val **1.98** |
+
+生成例（`--temperature 0.7`、prompt「エージェントの知識は」）:
+
+> エージェントの知識は可能
+> \- [Claude の Prompt-in-published データ生成: 2 (3) articles
+> \- [ ] \*\*スキルの chat you knowledge.md (2026-04-10) \*\*ステスト\*\*: 3 件\*\*
+> \- [ ] 2 件の効果（Mem0 Moral による前作）
+> \- [ ] \*\*contemplative-agent/ は instinct（9 日間接続）
+
+文字単位の 4M モデルでも、Markdown のリスト・チェックボックス構造、日付形式、実在プロジェクト名（contemplative-agent）まで再現する。意味は通らない — このサイズと文字単位 tokenization の限界も同時に体感できる。attention heatmap・loss curve は `python -m tiny_lm.viz` の自己完結 HTML レポートで確認できる。
 
 ## 設計判断（なぜこう作ったか）
 
